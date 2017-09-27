@@ -1,0 +1,17 @@
+<% include ./partials/header.ejs %>
+    <div class="page authenticate">
+        <div class="logo-area">
+            <img class="logo" src="https://scontent.fdel8-1.fna.fbcdn.net/v/t1.0-9/19989223_1573302199406383_5634716002915959868_n.jpg?oh=6b13702414aea1214c7655f238e2e6c7&oe=5A4C45FA" />
+        </div>
+        <div class="form-area">
+            <h2>Sign in to your Apollo ID</h2>
+            <p>Don't have one? <a href="/register">Let's get it created</a></p>
+            <form method="POST" action='/login'>
+                <input type="email" name="username" placeholder="EMAIL" />
+                <input type="password" name="password" placeholder="PASSWORD" />
+                <button class="btn-btn-large btn-primary">Sign In</button>                  
+            </form>
+            <p>Apollo ID manages your connected email address. Link your email account in the next step.</p>
+        </div>
+    </div>
+<% include ./partials/footer.ejs %>

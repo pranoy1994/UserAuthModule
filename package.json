@@ -1,0 +1,23 @@
+{
+  "name": "apollo_user",
+  "version": "1.0.0",
+  "description": "Apollo User Module",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Yashendra Goyal",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "ejs": "^2.5.7",
+    "express": "^4.15.5",
+    "express-mailer": "^0.3.1",
+    "express-session": "^1.15.6",
+    "mongoose": "^4.11.13",
+    "passport": "^0.4.0",
+    "passport-local": "^1.0.0",
+    "passport-local-mongoose": "^4.2.1",
+    "passport-local-mongoose-email": "^0.1.3"
+  }
+}
