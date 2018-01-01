@@ -1,0 +1,31 @@
+<% include ./partials/header.ejs %>
+	<div class="admin-page" style="background:white; border: 1px solid gray">
+		<div style="background:#d9a875; padding:15px">
+			<h1>ApolloMail</h1>
+			<p style="display: inline-block;">Manage all the users of Apollo Mail here.</p>
+			<a href="/logout" style="display: inline-block; float: right">LogOut</a>
+		</div>
+		<div style="padding:0 15px">
+			<% users.forEach(function(user){ %>
+			<div class='row' style="padding:15px;">
+				<div class="col-lg-3">
+					<%= user.name %>
+				</div>
+				<div class="col-lg-3">
+					<%= user.email %>
+				</div>
+				<div class="col-lg-3">
+					<%if(user.isAuthenticated){ %>
+						<p>Email Verified</p>
+					<% }else{ %>
+						<p>Email Verification Pending | <a href="/verify?authToken=<%= user.authToken %>">Verify</a> </p>
+					<% } %>
+				</div>
+				<div class="col-lg-3">
+					<a href="#">Delete User</a>
+				</div>
+			</div>
+			<% }) %>
+		</div>
+	</div>
+<% include ./partials/footer.ejs %>

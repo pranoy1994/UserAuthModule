@@ -1,34 +1,29 @@
 var express         =   require("express"),
     mongoose        =   require("mongoose"),
     passport        =   require("passport"),
-    LocalStrategy   =   require("passport-local"),
+    LocalStrategy   =   require("passport-local").Strategy,
     bodyParser      =   require("body-parser"),
     User            =   require("./models/user"),
-    mailer          =   require("express-mailer");
+    flash           =   require("connect-flash");
     
 var app             =   express();
+var indexRoutes     =   require("./routes/index");
 
-mailer.extend(app, {
-    from: 'no-reply@apollomail.com',
-    host: 'smtp.gmail.com', // hostname 
-    secureConnection: true, // use SSL 
-    port: 465, // port for secure SMTP 
-    transportMethod: 'SMTP', // default is SMTP. Accepts anything that nodemailer accepts 
-    auth: {
-        user: 'goyal.yashendra@gmail.com',
-        pass: 'Yash@1234'
-    }
-});
 
 // Connect to MongoDB
 mongoose.connect("mongodb://localhost/apollo",{
     useMongoClient: true
 });
 
+// mongoose.connect("mongodb://ygoyal:987456321@ds135537.mlab.com:35537/apollo");
+
 // Set Up view parameters and static dir path
 app.set('view engine', 'ejs');
 app.use(express.static(__dirname + "/public"));
+app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
+app.use(flash());
+
 
 // Configure Passport
 app.use(require("express-session")({
@@ -39,57 +34,74 @@ app.use(require("express-session")({
 
 app.use(passport.initialize());
 app.use(passport.session());
-passport.use(new LocalStrategy(User.authenticate()));
+passport.use(User.createStrategy());
+// passport.use('local-login', new LocalStrategy({
+// 		passReqToCallback: true
+// 		},
+// 		function(req, username, password, done){
+// 			process.nextTick(function(){
+// 				User.findOne({ 'email': username}, function(err, user){
+// 					if(err)
+// 						return done(err);
+// 					if(!user)
+// 						return done(null, false, req.flash('loginMessage', 'No User found'));
+// 					if (!user.verifyPassword(password)) { return done(null, false); }
+// 					return done(null, user);
+
+// 				});
+// 			});
+// 		}
+// ));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
-// Routes - GET
-app.get('/register',function(req, res){
-    res.render('register');
-});
 
-app.get('/login', function(req, res){
-    res.render('login');
-});
-
-app.get('/welcome', function(req, res) {
-    res.render('welcome');
-});
-
-app.get('*', function(req, res){
-    res.render('register');
-});
-
-app.post("/register",function(req, res){
-    var newUser = new User({
-        name: req.body.firstname + ' ' + req.body.lastname,
-        email: req.body.username
+// Create Admin if not already present
+var Admin = new User({
+        name: 'admin',
+        email: 'admin@apollomail.com',
+        isAdmin: true
     });
-    console.log(newUser);
-    User.register(newUser, req.body.password, function(err,user){
-        if(err){
-            console.log("error");
-            res.render("register");
-        }
-        app.mailer.send('email', {
-            to: 'yashegoy@in.ibm.com', // REQUIRED. This can be a comma delimited string just like a normal email to field.  
-            subject: 'Test Email', // REQUIRED. 
-            //otherProperty: 'Other Property' // All additional properties are also passed to the template as local variables. 
-            }, function (err) {
-                if (err) {
-                    // handle error 
-                    console.log(err);
-                    res.send('There was an error sending the email');
-                    return;
-                }
-            res.send('Email Sent');
-        });
-    });
-});
-
-app.post('/login', passport.authenticate("local",{successRedirect: "/welcome", failureRedirect: "/login"}),function(req, res){
     
+var query = {
+        $or: [{email: Admin.email},{isAdmin: Admin.isAdmin}]
+    };
+
+
+var password = 'admin@apollomail';
+    // console.log('I am here');
+User.findOne(query, function (err, user) {
+    if(err){
+        console.log(err);
+    }
+    if(user){
+        // console.log(user);
+        console.log('Admin already present!');
+    }
+    else{
+        console.log('Hi');
+        User.register(Admin, password, function(err, user){
+            if(err){
+                console.log(err);
+            }
+            else{
+                User.verifyEmail(user.authToken, function(err, existingAuthToken){
+                    
+                });   
+            }
+        });
+    }
 });
+
+app.use(function(req,res,next){
+    res.locals.currentUser = req.user;
+    res.locals.error = req.flash("error");
+    res.locals.success = req.flash("success");
+    next();
+});
+
+app.use(indexRoutes);
+
 
 // Start Server
 app.listen(process.env.PORT, process.env.IP, function(){

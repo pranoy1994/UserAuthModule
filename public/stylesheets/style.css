@@ -1,7 +1,4 @@
-.page.authenticate{
-    text-align: center;
-    margin-top: 30px;
-    flex: 1;
+.page{
     display: flex;
 }
 
@@ -9,10 +6,65 @@
     background: #4ECDC4;  /* fallback for old browsers */
     background: -webkit-linear-gradient(to right, #556270, #4ECDC4);  /* Chrome 10-25, Safari 5.1-6 */
     background: linear-gradient(to right, #556270, #4ECDC4); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-    width: 40%;
 }  
 
+.logo{
+    margin: 40% 30%;
+    width: 40%;
+}
+
+.col{
+    flex: 1;
+    height: 100vh;
+}
+
 .form-area{
-  width: 60%;
-  margin: 10%;
+    text-align: center;
+    padding-top: 10%;
+    position: relative;
+}
+
+.alert{
+    position: absolute;
+    top: 10px;
+    right: 0;
+    width: 100%;
+}
+
+.firstname{
+    display: inline-block;
+    border-bottom-right-radius: 0;
+    border-top-right-radius: 0;
+    border-right: 0;
+}
+
+.lastname{
+    display: inline-block;
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
+}
+
+.welcome{
+    color: Gray;
+    margin: 100px auto;
+    width: 50%;
+}
+
+
+.row:nth-child(even){
+    background: whitesmoke;
+}
+
+
+.admin-page{
+    margin-top: 50px;
+    box-shadow: 10px 10px 5px #888888;
+    border-radius: 2px;
+}
+
+@media only screen and (max-width: 800px)
+{
+    .logo-area{
+        display: none;
+    }
 }

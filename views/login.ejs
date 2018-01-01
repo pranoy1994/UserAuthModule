@@ -1,17 +1,39 @@
 <% include ./partials/header.ejs %>
     <div class="page authenticate">
-        <div class="logo-area">
-            <img class="logo" src="https://scontent.fdel8-1.fna.fbcdn.net/v/t1.0-9/19989223_1573302199406383_5634716002915959868_n.jpg?oh=6b13702414aea1214c7655f238e2e6c7&oe=5A4C45FA" />
-        </div>
-        <div class="form-area">
+        <div class="logo-area col">
+            <img class="logo" src="/assets/apollo.png" />
+        </div><div class="form-area col">
+            <div class="alert">
+                <% if(success && success.length>0){ %>
+                    <div class="alert alert-success" role="alert"><%= success %></div>
+                <% } %>
+                <% if(error && error.length>0){ %>
+                    <div class="alert alert-danger" role="alert"><%= error %></div>
+                <% } %>
+            </div>
             <h2>Sign in to your Apollo ID</h2>
-            <p>Don't have one? <a href="/register">Let's get it created</a></p>
+            <p style="margin:20px auto">Don't have one? <a href="/register">Let's get it created</a></p>
             <form method="POST" action='/login'>
-                <input type="email" name="username" placeholder="EMAIL" />
-                <input type="password" name="password" placeholder="PASSWORD" />
-                <button class="btn-btn-large btn-primary">Sign In</button>                  
+                <div class='form-group'>
+                    <input style="padding:2.5%; width:80%; margin:auto" class="form-control" id="email" type="email" name="email" placeholder="EMAIL" />
+                </div>
+                <div class='form-group'>
+                    <input style="padding:2.5%; width:80%; margin:auto" class="form-control" type="password" name="password" placeholder="PASSWORD" />
+                </div>
+                <div class='form-group'>
+                    <input style="width:80%" class="btn btn-lg btn-primary" type="submit" value="Sign In" onclick="convert()" />
+                </div>
             </form>
+            <br/>
             <p>Apollo ID manages your connected email address. Link your email account in the next step.</p>
         </div>
     </div>
+    <script type="text/javascript">
+        function convert() {
+            var str;
+            var srch=document.getElementById("email");
+            str = srch.value;
+            srch.value=str.toLowerCase();
+        }
+    </script>
 <% include ./partials/footer.ejs %>

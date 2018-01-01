@@ -5,7 +5,8 @@ var mongoose                =   require("mongoose"),
 var UserSchema  =   new mongoose.Schema({
     name: String,
     password: String,
-    email: String
+    email: { type: String, unique: true, lowercase: true, required: true },
+    isAdmin: { type: Boolean, default: false, required: true }
 });
 
 UserSchema.plugin(passportLocalMongooseEmail,{
