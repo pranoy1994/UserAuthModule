@@ -1,1 +1,16 @@
-<h1>Welcome</h1>
+<% include ./partials/header.ejs %>
+    <div class="welcome container">
+        <div class="jumbotron">
+            <h2>Welcome <%= user.name %></h2>
+            <% if(user.isAuthenticated){ %>
+                <p>ThankYou for choosing ApolloMail!!! Your email has been verified, enjoy the Apollo experience.</p>
+            <% }else{ %>
+                <p>Please verify your email address in order to enjoy uninterrupted service from ApolloMail.</p>
+            <% } %>
+            <a href="/logout">Logout</a>
+            <div id="pro-account" style="display:none">
+                <%= user.authToken %>
+            </div>
+        </div>
+    </div>
+<% include ./partials/footer.ejs %>
