@@ -1,8 +1,16 @@
+.page {
+    background-color: #F3F3F3;
+    flex: 1;
+  }
+
 .page.authenticate{
     text-align: center;
-    margin-top: 30px;
+    margin: 100px auto;
     flex: 1;
     display: flex;
+    border: 1px solid gray;
+    width: 70%;
+
 }
 
 .logo-area{
@@ -15,4 +23,18 @@
 .form-area{
   width: 60%;
   margin: 10%;
+}
+
+.logo{
+    width: 40%;
+    margin-top: 75px;
+}
+
+.username{
+    margin: 0;
+    padding: 0;
+}
+
+.full_length{
+  width: 100%;
 }

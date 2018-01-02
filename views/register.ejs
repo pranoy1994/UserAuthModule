@@ -1,22 +1,28 @@
 <% include ./partials/header.ejs %>
     <div class="page authenticate">
         <div class="logo-area">
-            <img class="logo" src="https://scontent.fdel8-1.fna.fbcdn.net/v/t1.0-9/19989223_1573302199406383_5634716002915959868_n.jpg?oh=6b13702414aea1214c7655f238e2e6c7&oe=5A4C45FA" />
+            <img class="logo" src="/assets/apollo.png" />
         </div>
         <div class="form-area">
             <h2>Create an Apollo ID</h2>
             <p>Your Apollo ID manages your email address. Add your email account after registering.</p>
             <form method='POST' action='/register'>
-                <div>
+                <div class="form-group">
                     <input class="username" type="text" name="firstname" placeholder="FIRST NAME" />
                     <input class="username" type="text" name="lastname" placeholder="LAST NAME" />
                 </div>
-                <input type="email" name="username" placeholder="EMAIL" />
-                <input type="password" name="password" placeholder="PASSWORD" />
-                <button class="btn-btn-large btn-primary">Create my Apollo ID</button>                  
+                <div class="form-group">
+                    <input class="full_length" type="email" name="username" placeholder="EMAIL" />
+                </div>
+                <div class="form-group">
+                    <input class="full_length" type="password" name="password" placeholder="PASSWORD" />
+                </div>
+                <button class="btn btn-primary">Create my Apollo ID</button>                  
             </form>
             <p>Already have Apollo ID?<a href="/login">Sign In</a></p>
             <p>By Creating an account you agree to Apollo Terms of Service and Privacy Policy.</p>
         </div>
     </div>
 <% include ./partials/footer.ejs %>
+
+
