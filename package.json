@@ -15,6 +15,7 @@
     "express": "^4.15.5",
     "express-mailer": "^0.3.1",
     "express-session": "^1.15.6",
+    "html-pdf": "^2.2.0",
     "mongoose": "^4.11.13",
     "nodemailer": "^4.1.1",
     "passport": "^0.4.0",

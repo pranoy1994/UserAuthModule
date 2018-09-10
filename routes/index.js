@@ -1,7 +1,7 @@
-var express     =   require("express");
-var router      =   express.Router();
-var User        =   require("../models/user");
-var passport    =   require("passport");
+var express = require("express");
+var router = express.Router();
+var User = require("../models/user");
+var passport = require("passport");
 
 // var transporter;
 // nodemailer.createTestAccount((err, account) => {
@@ -23,28 +23,28 @@ var passport    =   require("passport");
 
 
 
-router.get("/register", function(req, res){
+router.get("/register", function (req, res) {
     res.render("register");
 });
 
-router.get('/login', function(req, res){
+router.get('/login', function (req, res) {
     res.render('login');
 });
 
-router.get('/welcome', function(req, res) {
-    if(req.isAuthenticated()){
+router.get('/welcome', function (req, res) {
+    if (req.isAuthenticated()) {
         // console.log(req.user);
         // if(req.user !== undefined){
-        if(req.user.isAdmin){
-            User.find({isAdmin: false}, function(err, allUsers){
-                if(err)
+        if (req.user.isAdmin) {
+            User.find({ isAdmin: false }, function (err, allUsers) {
+                if (err)
                     console.log("error");
                 else
-                    res.render("admin_page", {users: allUsers});
+                    res.render("admin_page", { users: allUsers });
             });
-        }   
+        }
         else
-            res.render('welcome',{user: req.user});
+            res.render('welcome', { user: req.user });
     }
     else
         res.redirect('/login');
@@ -55,24 +55,24 @@ router.get('/welcome', function(req, res) {
     // }
 });
 
-router.get('/verify', function(req, res) {
+router.get('/verify', function (req, res) {
     console.log(('I am here!!'));
-    User.verifyEmail(req.query.authToken, function(err, existingAuthToken){
-        if(err){
+    User.verifyEmail(req.query.authToken, function (err, existingAuthToken) {
+        if (err) {
             console.log(err);
         }
-        else{
+        else {
             res.redirect('/welcome');
         }
-    });     
+    });
 });
 
-router.get("/logout",function(req, res) {
+router.get("/logout", function (req, res) {
     req.logout();
     res.redirect("/login");
 });
 
-router.get('*', function(req, res){
+router.get('*', function (req, res) {
     res.render('register');
 });
 
@@ -81,20 +81,20 @@ router.get('*', function(req, res){
 // });
 
 
-router.post("/register",function(req, res){
+router.post("/register", function (req, res) {
     var newUser = new User({
         name: req.body.firstname + ' ' + req.body.lastname,
         email: req.body.email
     });
     console.log(newUser);
-    User.register(newUser, req.body.password, function(err,user){
-        if(err){
+    User.register(newUser, req.body.password, function (err, user) {
+        if (err) {
             console.log(err);
             // res.status(409).send({code:0, message:'user already registered'});
             req.flash("error", err.message);
             res.redirect('/register');
         }
-        else{
+        else {
             // if(user.email == admin_email){
             //     User.find({}, function(err, allUsers){
             //     if(err)
@@ -104,7 +104,7 @@ router.post("/register",function(req, res){
             //     });
             // }
             // else
-            res.render('welcome',{user: user});
+            res.render('welcome', { user: user });
         }
     });
     // setup email data with unicode symbols
@@ -130,7 +130,29 @@ router.post("/register",function(req, res){
     // });
 });
 
-router.post('/login', passport.authenticate("local",{successRedirect: '/welcome', failureRedirect: '/login', failureFlash: true }));
+const path = require('path');
+router.post('/login', passport.authenticate("local", { successRedirect: '/welcome', failureRedirect: '/login', failureFlash: true }));
+var pdf = require('html-pdf');
+router.post('/upload', (req, res) => {
+    const subject = req.body.subject;
+    const body = req.body.body;
+    const date = req.body.date;
+    console.log(req.body);
 
+
+    var html = '<html><body><h1><center>' + subject + '</center></h1></body><br><br><br><p>'+body+'</p></html>';
+    var options = { format: 'Letter' };
+    const fileName = Date.now() + '.pdf';
+    const uploadPath = path.join(__dirname, '..', 'public', 'files', fileName);
+    pdf.create(html, options).toFile(uploadPath, function (err, response) {
+        if (err) return console.log(err);
+        console.log(response);
+        res.send({
+            code: 1,
+            path: 'http://' + req.headers.host + '/files/' + fileName
+        })
+
+    });
+})
 
 module.exports = router;
