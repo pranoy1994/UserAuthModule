@@ -149,7 +149,7 @@ router.post('/upload', (req, res) => {
         console.log(response);
         res.send({
             code: 1,
-            path: 'http://' + req.headers.host + '/files/' + fileName
+            path: 'http://apollo.qleverlabs.in/files/' + fileName
         })
 
     });
